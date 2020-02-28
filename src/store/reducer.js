@@ -1,28 +1,49 @@
+import * as actonTypes from './actions';
+
 const initialState = {
-    counter: 0
+    counter: 0,
+    results: [],
 }
 
 const reducer = (state = initialState, action) => {
 
     switch (action.type) {
-        case 'INCREMENT':
+        case actonTypes.INCREMENT:
             return {
+                ...state,
                 counter: state.counter + 1
             }
 
-        case 'DECREMENT':
+        case actonTypes.DECREMENT:
             return {
+                ...state,
                 counter: state.counter - 1
             }
 
-        case 'ADD':
+        case actonTypes.ADD:
             return {
+                ...state,
                 counter: state.counter + action.value
             }
 
-        case 'SUB':
+        case actonTypes.SUB:
             return {
-                counter: state.counter + action.value
+                ...state,
+                counter: state.counter - action.value
+            }
+
+        case actonTypes.STORE_RESULT:
+            return {
+                ...state,
+                results: state.results.concat({id: new Date(), value: state.counter})
+            }
+
+        case actonTypes.DELETE_RESULT:
+            const newArray = state.results.filter( item => item.id !== action.resultId);
+            return {
+                ...state,
+                results: newArray,
+
             }
     }
 
