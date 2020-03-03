@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import CounterControl from '../../components/CounterControl/CounterControl';
 import CounterOutput from '../../components/CounterOutput/CounterOutput';
-import * as actionTypes from '../../store/actions';
+import * as actionCreators from '../../store/actions/index';
 
 class Counter extends Component {
 
@@ -16,7 +16,7 @@ class Counter extends Component {
                 <CounterControl label="Add 5" clicked={this.props.onAddValueToCounter}  />
                 <CounterControl label="Subtract 5" clicked={this.props.onSubValueToCounter}  />
                 <hr />
-                <button onClick={this.props.onStoreResult}>Store Result</button>
+                <button onClick={()=>this.props.onStoreResult(this.props.ctr)}>Store Result</button>
                 <ul>
                     {this.props.storedResults.map(result => <li key={result.id} onClick={() => this.props.onDeleteResult(result.id)}>{result.value}</li>)}
                 </ul>
@@ -27,19 +27,19 @@ class Counter extends Component {
 
 const mapStateToProps = state => {
     return {
-        ctr: state.counter,
-        storedResults: state.results
+        ctr: state.ctr.counter,
+        storedResults: state.res.results
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onIncrementCounter: () => dispatch({type: actionTypes.INCREMENT}),
-        onDecrementCounter: () => dispatch({type: actionTypes.DECREMENT}),
-        onAddValueToCounter: () => dispatch({type: actionTypes.ADD, value:5}),
-        onSubValueToCounter: () => dispatch({type: actionTypes.SUB, value:5}),
-        onStoreResult: () => dispatch({type: actionTypes.STORE_RESULT}),
-        onDeleteResult: (id) => dispatch({type: actionTypes.DELETE_RESULT,resultId:id}),
+        onIncrementCounter: () => dispatch(actionCreators.increment()),
+        onDecrementCounter: () => dispatch(actionCreators.decrement()),
+        onAddValueToCounter: () => dispatch(actionCreators.add(5)),
+        onSubValueToCounter: () => dispatch(actionCreators.sub(5)),
+        onStoreResult: (result) => dispatch(actionCreators.storeResult(result)),
+        onDeleteResult: (id) => dispatch(actionCreators.deleteResult(id)),
     };
 };
 
